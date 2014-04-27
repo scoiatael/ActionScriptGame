@@ -9,7 +9,8 @@ package {
   import flash.display.*;
   import flash.events.*;
   import flash.geom.Vector3D;
-  import flash.text.TextField;
+
+  [SWF(backgroundColor="#000000", frameRate="60")]
 
   public class TestProject extends Sprite {
     private var _view:away3d.containers.View3D;
@@ -21,6 +22,9 @@ package {
     }
 
     public function TestProject() {
+        stage.scaleMode = StageScaleMode.NO_SCALE;
+        stage.align = StageAlign.TOP_LEFT;
+
         _view = new View3D(); 
         _view.backgroundColor = 0x666666; 
         _view.antiAlias = 4; 
@@ -33,9 +37,6 @@ package {
         _view.scene.addChild(_plane);
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
 
-        var display_txt:TextField = new TextField();
-        display_txt.text = "Hello World!";
-        this.addChild(display_txt);
     }
   }
 }
