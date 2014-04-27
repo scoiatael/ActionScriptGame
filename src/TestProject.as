@@ -21,6 +21,15 @@ package {
       _view.render(); 
     }
 
+    /**
+    * stage listener for resize events
+    */
+    private function onResize(event:Event = null):void
+    {
+      _view.width = stage.stageWidth;
+      _view.height = stage.stageHeight;
+    }
+
     public function TestProject() {
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;
@@ -36,6 +45,8 @@ package {
         _plane = new Mesh(new PlaneGeometry(700,700));
         _view.scene.addChild(_plane);
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
+        stage.addEventListener(Event.RESIZE, onResize);
+        onResize();
 
     }
   }
