@@ -9,6 +9,7 @@ package {
   import flash.display.*;
   import flash.events.*;
   import flash.geom.Vector3D;
+  import flash.text.TextField;
 
   public class TestProject extends Sprite {
     private var _view:away3d.containers.View3D;
@@ -26,11 +27,15 @@ package {
         _view.camera.z = -600;
         _view.camera.y = 500;
         _view.camera.lookAt(new Vector3D());
-        this.addChild(_view); 
+//        this.addChild(_view); 
 
         _plane = new Mesh(new PlaneGeometry(700,700));
         _view.scene.addChild(_plane);
-        this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
+//        this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
+
+        var display_txt:TextField = new TextField();
+        display_txt.text = "Hello World!";
+        this.addChild(display_txt);
     }
   }
 }
