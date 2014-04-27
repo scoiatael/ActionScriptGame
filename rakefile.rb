@@ -24,10 +24,18 @@ require 'asunit4'
 # ENV['FCSH_PORT']        = 12321
 
 ##############################
+# Libs
+
+def configure_task t
+  t.library_path << 'lib/away3d/away3d-core-fp11_4_1_6.swc'
+end
+
+##############################
 # Debug
 
 # Compile the debug swf
 mxmlc "bin/TestProject-debug.swf" do |t|
+  configure_task t 
   t.input = "src/TestProject.as"
   t.static_link_runtime_shared_libraries = true
   t.debug = true
@@ -43,6 +51,7 @@ library :asunit4
 
 # Compile the test swf
 mxmlc "bin/TestProject-test.swf" => :asunit4 do |t|
+  configure_task t 
   t.input = "src/TestProjectRunner.as"
   t.static_link_runtime_shared_libraries = true
   t.source_path << 'test'
