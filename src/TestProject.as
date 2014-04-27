@@ -16,6 +16,9 @@ package {
     private var _view:away3d.containers.View3D;
     private var _plane:away3d.entities.Mesh;
 
+    [Embed(source="../embeds/floor_diffuse.jpg")]
+    public static var FloorDiffuse:Class;
+
     private function onEnterFrame(ev : Event) : void { 
       _plane.rotationY += 1;
       _view.render(); 
@@ -35,15 +38,16 @@ package {
         stage.align = StageAlign.TOP_LEFT;
 
         _view = new View3D(); 
-        _view.backgroundColor = 0x666666; 
-        _view.antiAlias = 4; 
+        this.addChild(_view); 
+
         _view.camera.z = -600;
         _view.camera.y = 500;
         _view.camera.lookAt(new Vector3D());
-        this.addChild(_view); 
 
-        _plane = new Mesh(new PlaneGeometry(700,700));
+        _plane = new Mesh(new PlaneGeometry(700, 700), 
+          new TextureMaterial(Classast.bitmapTexture(FloorDiffuse)));
         _view.scene.addChild(_plane);
+
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
         stage.addEventListener(Event.RESIZE, onResize);
         onResize();
