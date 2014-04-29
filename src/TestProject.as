@@ -1,3 +1,4 @@
+// vim: syntax=actionscript
 package {
 
   import away3d.containers.*;
@@ -16,7 +17,7 @@ package {
     private var _view:away3d.containers.View3D;
     private var _plane:away3d.entities.Mesh;
 
-    [Embed(source="../embeds/floor_diffuse.jpg")]
+    [Embed(source="../assets/skins/floor_diffuse.jpg")]
     public static var FloorDiffuse:Class;
 
     private function onEnterFrame(ev : Event) : void { 
@@ -45,7 +46,7 @@ package {
         _view.camera.lookAt(new Vector3D());
 
         _plane = new Mesh(new PlaneGeometry(700, 700), 
-          new TextureMaterial(Classast.bitmapTexture(FloorDiffuse)));
+          new TextureMaterial(Cast.bitmapTexture(FloorDiffuse)));
         _view.scene.addChild(_plane);
 
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
