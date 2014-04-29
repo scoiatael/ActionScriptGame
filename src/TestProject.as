@@ -20,7 +20,7 @@ package {
     private var plane:SimplePlane;
 
     private function onEnterFrame(ev : Event) : void { 
-      plane.update();
+      plane.update(1);
       view.render(); 
     }
 
@@ -38,10 +38,10 @@ package {
         stage.align = StageAlign.TOP_LEFT;
 
         view = new SimpleView(); 
-        this.addChild(view.delegate()); 
+        this.addChild(view); 
 
         plane = new SimplePlane();
-        view.addChild(plane.delegate());
+        view.scene.addChild(plane);
 
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
         stage.addEventListener(Event.RESIZE, onResize);
