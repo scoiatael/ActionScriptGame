@@ -11,17 +11,16 @@ package {
   import flash.events.*;
   import flash.geom.Vector3D;
 
+  import objects.SimplePlane;
+
   [SWF(backgroundColor="#000000", frameRate="60")]
 
   public class TestProject extends Sprite {
     private var _view:away3d.containers.View3D;
-    private var _plane:away3d.entities.Mesh;
-
-    [Embed(source="../assets/skins/floor_diffuse.jpg")]
-    public static var FloorDiffuse:Class;
+    private var plane:SimplePlane;
 
     private function onEnterFrame(ev : Event) : void { 
-      _plane.rotationY += 1;
+      plane.update();
       _view.render(); 
     }
 
@@ -45,9 +44,8 @@ package {
         _view.camera.y = 500;
         _view.camera.lookAt(new Vector3D());
 
-        _plane = new Mesh(new PlaneGeometry(700, 700), 
-          new TextureMaterial(Cast.bitmapTexture(FloorDiffuse)));
-        _view.scene.addChild(_plane);
+        plane = new SimplePlane();
+        _view.scene.addChild(plane.delegate());
 
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
         stage.addEventListener(Event.RESIZE, onResize);

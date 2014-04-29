@@ -10,3 +10,4 @@
 - gem install flashsdk --pre
 - bundle install
 - rake run
+- flashplayerdebugger -> open -> bin/TestProject.swf
