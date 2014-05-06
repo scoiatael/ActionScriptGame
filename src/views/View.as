@@ -19,6 +19,8 @@ package views {
     [Embed(source="../assets/skins/skybox/snow_negative_z.jpg")]
     private var EnvNegZ:Class;
 
+    private var _cameraController : HoverController;
+
     private var _skyBox:SkyBox; 
 
     public function setWidth(w : Number) : void {
@@ -28,7 +30,7 @@ package views {
       this.height = h;
     }
 
-    public function View() {
+    public function View( lookAt : ObjectContainer3D = null ) {
 
         //setup the cube texture
       var cubeTexture:BitmapCubeTexture = new BitmapCubeTexture(
@@ -42,9 +44,7 @@ package views {
       _skyBox = new SkyBox(cubeTexture);
       this.scene.addChild(_skyBox);
 
-      this.camera.z = -600;
-      this.camera.y = 500;
-      this.camera.lookAt(new Vector3D());
+      cameraController = new HoverController(this.camera, lookAt, 150, 10, 2000);
 
     }
 

@@ -6,19 +6,21 @@ package objects {
   import away3d.primitives.*;
   import away3d.utils.*;
 
-  public class SimplePlane extends away3d.entities.Mesh implements objects.BaseInterface {
+  public class Player extends away3d.entities.Mesh implements objects.BaseInterface {
 
     [Embed(source="../../assets/skins/floor_diffuse.jpg")]
     private static var FloorDiffuse:Class;
-
+    
+    private var count : Number;
 
     public function update(t : Number) : void {
-      // this.rotationY += t;
+      count += t;
+      this.scaleX = this.scaleY = this.scaleZ = sin(count);
     }
 
-    public function SimplePlane() {
-      super(new PlaneGeometry(700, 700), 
-      new TextureMaterial(Cast.bitmapTexture(FloorDiffuse)));
+    public function Player() {
+      super(new SphereGeometry(70), 
+        new TextureMaterial(Cast.bitmapTexture(FloorDiffuse)));
     }
 
   }

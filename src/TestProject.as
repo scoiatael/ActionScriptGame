@@ -10,17 +10,20 @@ package {
   import flash.display.*;
   import flash.events.*;
 
-  import objects.SimplePlane;
-  import views.SimpleView;
+  import objects.*;
+  import views.View;
 
   [SWF(backgroundColor="#000000", frameRate="60")]
 
   public class TestProject extends Sprite {
-    private var view:SimpleView;
-    private var plane:SimplePlane;
+    private var view:View;
+    private var objects:SimpleScene;
+    private var player:Player;
 
     private function onEnterFrame(ev : Event) : void { 
-      plane.update(1);
+      var d : Number = 1;
+      objects.update(d);
+      player.update(d);
       view.render(); 
     }
 
@@ -37,11 +40,15 @@ package {
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;
 
-        view = new SimpleView(); 
+        player = new Player();
+
+        view = new SimpleView(player); 
         this.addChild(view); 
 
-        plane = new SimplePlane();
-        view.scene.addChild(plane);
+        view.scene.addChild(player);
+
+        objects = new SimpleScene();
+        view.scene.addChild(objects);
 
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
         stage.addEventListener(Event.RESIZE, onResize);
