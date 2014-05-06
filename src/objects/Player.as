@@ -15,11 +15,11 @@ package objects {
 
     public function update(t : Number) : void {
       count += t;
-      this.scaleX = this.scaleY = this.scaleZ = sin(count);
+      this.scaleX = this.scaleY = this.scaleZ = Math.sin(count);
     }
 
     public function Player() {
-      super(new SphereGeometry(70), 
+      super(new SphereGeometry(700), 
         new TextureMaterial(Cast.bitmapTexture(FloorDiffuse)));
     }
 

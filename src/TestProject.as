@@ -17,12 +17,12 @@ package {
 
   public class TestProject extends Sprite {
     private var view:View;
-    private var objects:SimpleScene;
+    private var _objects:SimpleScene;
     private var player:Player;
 
     private function onEnterFrame(ev : Event) : void { 
       var d : Number = 1;
-      objects.update(d);
+      _objects.update(d);
       player.update(d);
       view.render(); 
     }
@@ -42,13 +42,13 @@ package {
 
         player = new Player();
 
-        view = new SimpleView(player); 
+        view = new View(player); 
         this.addChild(view); 
 
         view.scene.addChild(player);
 
-        objects = new SimpleScene();
-        view.scene.addChild(objects);
+        _objects = new SimpleScene();
+        view.scene.addChild(_objects);
 
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
         stage.addEventListener(Event.RESIZE, onResize);

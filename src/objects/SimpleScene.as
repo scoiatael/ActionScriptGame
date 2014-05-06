@@ -2,15 +2,16 @@
 package objects {
   import away3d.containers.*;
 
-  public class SimpleScene extends ObjectContainer3D implements BaseInterface {
+  public class SimpleScene extends ObjectContainer3D implements objects.BaseInterface {
     private var _plane : SimplePlane ;
+
+    public function update(t : Number) : void {
+      _plane.update(t);
+    }
 
     public function SimpleScene() {
       _plane = new SimplePlane();
-    }
-
-    public function update(d : number) : void {
-      _plane.update(d);
+      this.addChild(_plane);
     }
 
   }
