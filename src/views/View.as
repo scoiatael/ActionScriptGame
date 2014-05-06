@@ -8,6 +8,8 @@ package views {
   import away3d.textures.*;
   import away3d.utils.*;
 
+  import away3d.lights.*;
+
   public class View extends away3d.containers.View3D {
 
     [Embed(source="../../assets/skins/skybox/snow_positive_x.jpg")]
@@ -26,6 +28,8 @@ package views {
     private var _cameraController : FollowController;
 
     private var _skyBox:SkyBox; 
+    
+    private var _light : DirectionalLight;
 
     public function setWidth(w : Number) : void {
       this.width = w;
@@ -50,6 +54,16 @@ package views {
 
       _cameraController = new FollowController(this.camera, lookAt, 10, 200);
 
+      _light = new DirectionalLight(0,100,0);
+      _light.direction = new Vector3D(0,0,0);
+      _light.ambient = 0.01;
+      _light.diffuse = 0.1;
+      this.scene.addChild(_light);
+
+    }
+
+    public function get light() : DirectionalLight {
+      return _light;
     }
 
   }

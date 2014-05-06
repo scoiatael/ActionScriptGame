@@ -6,6 +6,7 @@ package {
   import away3d.materials.*;
   import away3d.primitives.*;
   import away3d.utils.*;
+  import away3d.materials.lightpickers.*;
 
   import flash.display.*;
   import flash.events.*;
@@ -68,6 +69,7 @@ package {
         view = new View(player); 
         this.addChild(view); 
 
+        player.addLightPicker(new StaticLightPicker([view.light]));
         view.scene.addChild(player);
 
         _objects = new SimpleScene();
