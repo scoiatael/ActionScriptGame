@@ -23,7 +23,7 @@ package views {
     [Embed(source="../../assets/skins/skybox/snow_negative_z.jpg")]
     private var EnvNegZ:Class;
 
-    private var _cameraController : HoverController;
+    private var _cameraController : FollowController;
 
     private var _skyBox:SkyBox; 
 
@@ -48,7 +48,7 @@ package views {
       _skyBox = new SkyBox(cubeTexture);
       this.scene.addChild(_skyBox);
 
-      _cameraController = new HoverController(this.camera, lookAt, 150, 10, 2000);
+      _cameraController = new FollowController(this.camera, lookAt, 10, 200);
 
     }
 
