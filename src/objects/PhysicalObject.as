@@ -11,10 +11,10 @@ package objects {
   import flash.geom.*;
   import physics.*;
 
-  public class PhysicalObject extends away3d.entities.Mesh implements objects.BaseInterface {
+  public class PhysicalObject extends ObjectContainer3D implements objects.BaseInterface {
     private var _force : Vector3D;
     private var forces : Array;
-    private var _speed : Vector3D;
+    protected var _speed : Vector3D;
     private var mass : Number;
 
     public function update( t : Number ) : void {
@@ -40,9 +40,8 @@ package objects {
       return _speed;
     }
 
-    public function PhysicalObject( g : Geometry, mat : MaterialBase = null, 
+    public function PhysicalObject(  
                                     fs : Array = null, m : Number = 1, s : Vector3D = null ) {
-      super(g, mat);
       if(fs == null) {
         fs = new Array();
       }
@@ -56,11 +55,6 @@ package objects {
       updateForces();
     }
 
-    public function thrustForward(d : Number) : void {
-      var v : Vector3D = forwardVector.clone();
-      v.scaleBy(d);
-      _force = _force.add(v);
-    }
   }
 }
 

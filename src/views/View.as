@@ -7,6 +7,7 @@ package views {
   import away3d.controllers.*;
   import away3d.textures.*;
   import away3d.utils.*;
+  import away3d.events.*;
 
   import away3d.lights.*;
 
@@ -29,7 +30,7 @@ package views {
 
     private var _skyBox:SkyBox; 
     
-    private var _light : DirectionalLight;
+    private var _light : PointLight;
 
     public function setWidth(w : Number) : void {
       this.width = w;
@@ -54,15 +55,25 @@ package views {
 
       _cameraController = new FollowController(this.camera, lookAt, 10, 200);
 
-      _light = new DirectionalLight(0,100,0);
-      _light.direction = new Vector3D(0,0,0);
-      _light.ambient = 0.01;
-      _light.diffuse = 0.1;
+      _light = new PointLight();
+      _light.moveTo(0,500,0);
+//      _light.direction = new Vector3D(0,-1,0);
+      _light.lookAt(new Vector3D(0,0,0));
+      _light.ambient = 0.2;
+      _light.diffuse = 0.5;
+      _light.specular = 0.9
       this.scene.addChild(_light);
+/*
+      if(lookAt != null) {
+        _light.direction = lookAt.position;
+        lookAt.addEventListener(Object3DEvent. POSITION_CHANGED, function () : void { 
+          _light.direction = lookAt.position; });
+      }
+*/
 
     }
 
-    public function get light() : DirectionalLight {
+    public function get light() : PointLight {
       return _light;
     }
 

@@ -15,20 +15,28 @@ package objects {
     private static var PlayerDiffuse:Class;
     [Embed(source="../../assets/skins/player_specular.jpg")]
     private static var PlayerSpecular:Class;
-    private static var rollOver : Number;
     private var mat : TextureMaterial;
+
+    private var ball : away3d.entities.Mesh;
     
     public function Player() {
       mat = new TextureMaterial(Cast.bitmapTexture(PlayerDiffuse));
       mat.specularMap = Cast.bitmapTexture(PlayerSpecular);
 
-      super(new SphereGeometry(20), mat);
+      ball = new Mesh(new SphereGeometry(20), mat);
+      addChild(ball);
       moveUp(20);
-      rollOver = 0;
     }
     
     public function addLightPicker(l : LightPickerBase) : void {
       mat.lightPicker = l;
+    }
+
+    public function thrustForward(d : Number) : void {
+      var v : Vector3D = forwardVector.clone();
+      v.scaleBy(d);
+      _speed = _speed.add(v);
+      ball.pitch(d * _speed.length);
     }
 
   }
