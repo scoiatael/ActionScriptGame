@@ -6,6 +6,7 @@ package objects {
   import away3d.materials.lightpickers.*;
   import away3d.primitives.*;
   import away3d.utils.*;
+  import away3d.events.*;
 
   import flash.geom.Vector3D;
 
@@ -18,14 +19,19 @@ package objects {
     private var mat : TextureMaterial;
 
     private var ball : away3d.entities.Mesh;
+    private const var radius : Number;
     
-    public function Player() {
+    public function Player(n : Number = 20) {
+      radius = n;
+
       mat = new TextureMaterial(Cast.bitmapTexture(PlayerDiffuse));
       mat.specularMap = Cast.bitmapTexture(PlayerSpecular);
 
-      ball = new Mesh(new SphereGeometry(20), mat);
+      ball = new Mesh(new SphereGeometry(radius), mat);
       addChild(ball);
-      moveUp(20);
+      moveUp(radius);
+      addEventListener(Object3DEvent.POSITION_CHANGED, function () : void { 
+        ball.pitch(0.75 * Math.sqrt(_speed.length) * _speed.dotProduct(forwardVector)); });
     }
     
     public function addLightPicker(l : LightPickerBase) : void {
@@ -36,7 +42,6 @@ package objects {
       var v : Vector3D = forwardVector.clone();
       v.scaleBy(d);
       _speed = _speed.add(v);
-      ball.pitch(d * _speed.length);
     }
 
   }
