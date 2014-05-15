@@ -13,15 +13,16 @@ package objects {
 
   public class PhysicalObject extends ObjectContainer3D implements objects.BaseInterface {
     private var _force : Vector3D;
-    private var forces : Array;
+    protected var forces : Array;
     protected var _speed : Vector3D;
-    private var mass : Number;
+    private var _mass : Number;
+    private var alive : Boolean;
 
     public function update( t : Number ) : void {
-      if(speed.length != 0) {
+      if(_speed.length != 0) {
         translate(_speed, _speed.length * t);
       }
-      _force.scaleBy(t/mass)
+      _force.scaleBy(t/_mass)
       _speed = _speed.add(_force);
       _force.scaleBy(0);
       updateForces();
@@ -40,6 +41,22 @@ package objects {
       return _speed;
     }
 
+    public function get mass() : Number {
+      return _mass;
+    }
+    
+    public function die() : void {
+      trace("dying");
+      alive = false;
+    }
+
+    public function isAlive() : Boolean {
+      return alive;
+    }
+
+    public function collideWith (o : PhysicalObject) : void {
+    }
+
     public function PhysicalObject(  
                                     fs : Array = null, m : Number = 1, s : Vector3D = null ) {
       if(fs == null) {
@@ -49,12 +66,12 @@ package objects {
         s = new Vector3D();
       }
       forces = fs.concat( new Drag());
-      mass = m;
+      _mass = m;
       _speed = s;
       _force = new Vector3D;
+      alive = true;
       updateForces();
     }
-
   }
 }
 

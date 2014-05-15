@@ -11,6 +11,7 @@ package {
   import flash.display.*;
   import flash.events.*;
   import flash.ui.*;
+  import flash.utils.getTimer;
 
   import objects.*;
   import views.View;
@@ -21,11 +22,30 @@ package {
     private var view:View;
     private var _objects:SimpleScene;
     private var player:Player;
+    private var keys:Array = [];
+    private var timeSinceLastUpdate:Number;
 
     private function onEnterFrame(ev : Event) : void { 
-      var d : Number = 1;
+      var t : Number = getTimer();
+      var d : Number = (t - timeSinceLastUpdate) / 10 / 8;
+      timeSinceLastUpdate = t;
+      if(keys[Keyboard.W]) {
+          player.thrustForward(d);
+      }
+      if(keys[Keyboard.S]) {
+          player.thrustForward(-d);
+      }
+      if(keys[Keyboard.A]) {
+          player.yaw(-d);
+      }
+      if(keys[Keyboard.D]) {
+          player.yaw(d);
+      }
       _objects.update(d);
       player.update(d);
+      if(! player.isAlive()) {
+        player = new Player();
+      }
       view.render(); 
     }
 
@@ -37,7 +57,8 @@ package {
       view.setWidth(stage.stageWidth);
       view.setHeight(stage.stageHeight);
     }
-    
+   
+/* 
     private function onKeydown(event : KeyboardEvent) : void {
       switch (event.charCode) {
         case 119:
@@ -57,7 +78,16 @@ package {
           player.yaw(1);
           break;
       }
-      
+    }
+*/
+    private function onKeyDown(e:KeyboardEvent):void
+    {
+      keys[e.keyCode] = true;
+    }
+     
+    private function onKeyUp(e:KeyboardEvent):void
+    {
+      keys[e.keyCode] = false;
     }
 
     public function TestProject() {
@@ -70,16 +100,18 @@ package {
         this.addChild(view); 
 
         player.addLightPicker(new StaticLightPicker([view.light]));
-        view.scene.addChild(player);
-
         _objects = new SimpleScene();
+        view.scene.addChild(player);
+//        _objects.addChild(player);
         view.scene.addChild(_objects);
 
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
         stage.addEventListener(Event.RESIZE, onResize);
         onResize();
         
-        stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeydown);
+        stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+        stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+        timeSinceLastUpdate = getTimer();
     }
   }
 }
