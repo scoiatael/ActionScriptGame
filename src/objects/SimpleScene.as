@@ -13,6 +13,10 @@ package objects {
     public function addLightPicker(l : LightPickerBase) : void {
       _plane.addLightPicker(l);
     }
+    
+    public function makePhysicsWork(p : Ball) : void {
+      _plane.checkInside([p]);
+    }
 
     public function SimpleScene() {
       _plane = new SimplePlane();

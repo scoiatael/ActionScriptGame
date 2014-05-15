@@ -8,10 +8,10 @@ package physics {
           var downV : Vector3D = o.upVector.clone();
           downV.scaleBy(-1);
           downV.scaleBy(o.mass*Constants.Gravity);
+          trace(downV);
           return downV;
         }
         public function Gravity() {
-          trace("gravity");
         }
         public function actOn( o : PhysicalObject) : Vector3D {
           return actOnS(o);

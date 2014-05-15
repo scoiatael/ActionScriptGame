@@ -9,6 +9,7 @@ package objects {
   import away3d.events.*;
 
   import flash.geom.Vector3D;
+  import flash.utils.*;
 
   import physics.*;
 
@@ -36,8 +37,14 @@ package objects {
         ball.pitch(0.75 * Math.sqrt(_speed.length) * _speed.dotProduct(forwardVector));});
     }
     
+    private var falling : Boolean = false; 
     public function fallOff() : void {
-      forces.concat(new Gravity());
+      if( ! falling) {
+        falling = true;
+        trace("falling off");
+        forces = forces.concat(new Gravity());
+        setTimeout(die,2000);
+      }
     }
     
     public function addLightPicker(l : LightPickerBase) : void {

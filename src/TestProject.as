@@ -11,7 +11,7 @@ package {
   import flash.display.*;
   import flash.events.*;
   import flash.ui.*;
-  import flash.utils.getTimer;
+  import flash.utils.*;
 
   import objects.*;
   import views.View;
@@ -41,10 +41,12 @@ package {
       if(keys[Keyboard.D]) {
           player.yaw(d);
       }
+      _objects.makePhysicsWork(player);
       _objects.update(d);
-      player.update(d);
-      if(! player.isAlive()) {
-        player = new Player();
+      if(player.isAlive()) {
+        player.update(d);
+      } else {
+        view.setTilt(90);
       }
       view.render(); 
     }

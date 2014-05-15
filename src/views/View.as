@@ -38,6 +38,10 @@ package views {
     public function setHeight(h : Number) : void {
       this.height = h;
     }
+    
+    public function setTilt( x : Number ) : void {
+      _cameraController.tiltAngle = x;
+    }
 
     public function View( lookAt : ObjectContainer3D = null ) {
 

@@ -29,7 +29,8 @@ package objects {
     public function checkInside ( objects : /*Ball*/Array ) : void {
       for (var a : String in objects) {
         var o : Ball = objects[a];
-        if(Math.sqrt(o.x^2 + o.z^2) > R) {
+        var l : Number = Math.sqrt(Math.pow(o.x,2) + Math.pow(o.z,2));
+        if(l > R) {
           o.fallOff();
         }
       }
@@ -39,7 +40,7 @@ package objects {
       mat = new TextureMaterial(Cast.bitmapTexture(FloorDiffuse));
       mat.specularMap = Cast.bitmapTexture(FloorSpecular);
       super(new CylinderGeometry(r, r,h), mat);
-      moveDown(h/2 + 1);
+      moveDown(h/3);
       H = h;
       R = r;
     }
