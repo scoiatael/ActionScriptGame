@@ -17,6 +17,7 @@ package objects {
         if(o.isAlive()) {
           o.update(t);
         } else {
+          trace("someone's dead");
           removeChild(o);
         }
       }

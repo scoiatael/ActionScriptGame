@@ -22,9 +22,9 @@ package objects {
       mat.lightPicker = l;
     }
     
-    public function checkInside ( _objects : /*Ball*/ObjectContainer3D ) : void {
-      for (var a : Number; a < _objects.numChildren; a++) {
-        var o : Ball = Ball(_objects.getChildAt(a));
+    public function checkInside ( _objects : /*PhysicalObject*/ObjectContainer3D ) : void {
+      for (var a : Number = 0; a < _objects.numChildren; a++) {
+        var o : PhysicalObject = PhysicalObject(_objects.getChildAt(a));
         var l : Number = Math.sqrt(Math.pow(o.x,2) + Math.pow(o.z,2));
         if(l > R) {
           o.fallOff();

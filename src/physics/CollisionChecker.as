@@ -20,7 +20,8 @@ package physics {
           oa = PhysicalObject(_objects.getChildAt(a));
           for (var b : Number = 0; b < _objects.numChildren; b++) {
             ob = PhysicalObject(_objects.getChildAt(b));
-            if(a != b && oa.radius + ob.radius >= length3D(oa.x,oa.y,oa.z,ob.x,ob.y,ob.z)) {
+            if(a != b && oa.isAlive() && ob.isAlive() && 
+                oa.radius + ob.radius >= length3D(oa.x,oa.y,oa.z,ob.x,ob.y,ob.z)) {
               trace(a,b);
               oa.collideWith(ob);
               ob.collideWith(oa);

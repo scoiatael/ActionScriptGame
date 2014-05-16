@@ -24,38 +24,60 @@ package {
     private var player:Player;
     private var keys:Array = [];
     private var timeSinceLastUpdate:Number;
+    private var endAnim : Boolean;
+    private var _stage : Number; // <0 - paused | =0 - main menu | >0 - playing
+
+
+    public function isPaused() : Boolean {
+      return _stage < 0;
+    }
+    public function isMainMenu() : Boolean {
+      return _stage == 0;
+    }
+    public function get gameStage() : Number {
+      return (_stage > 0) ? _stage : 0;
+    }
 
     private function onEnterFrame(ev : Event) : void { 
       var t : Number = getTimer();
       var d : Number = (t - timeSinceLastUpdate) / 10 / 8;
       timeSinceLastUpdate = t;
-      if(keys[Keyboard.Q]) {
-          player.thrustLeftward(d);
+      if(gameStage > 0) {
+        if(keys[Keyboard.Q]) {
+            player.thrustLeftward(d);
+        }
+        if(keys[Keyboard.E]) {
+            player.thrustLeftward(-d);
+        }
+        if(keys[Keyboard.SPACE]) {
+            player.thrustUpward(d*10);
+        }
+        if(keys[Keyboard.W]) {
+            player.thrustForward(d);
+        }
+        if(keys[Keyboard.S]) {
+            player.thrustForward(-d);
+        }
+        if(keys[Keyboard.A]) {
+            player.yaw(2*-d);
+        }
+        if(keys[Keyboard.D]) {
+            player.yaw(2*d);
+        }
+        _objects.makePhysicsWork();
+        _objects.update(d);
+        if(player.isAlive()) {
+        } else {
+          view.distance = Math.abs(player.y) + 10;
+          if(! endAnim) {
+            endAnim = true;
+            setTimeout(resetGame, 2000);
+            view.setTilt(90);
+          }
+        }
       }
-      if(keys[Keyboard.E]) {
-          player.thrustLeftward(-d);
-      }
-      if(keys[Keyboard.SPACE]) {
-          player.thrustUpward(d*10);
-      }
-      if(keys[Keyboard.W]) {
-          player.thrustForward(d);
-      }
-      if(keys[Keyboard.S]) {
-          player.thrustForward(-d);
-      }
-      if(keys[Keyboard.A]) {
-          player.yaw(2*-d);
-      }
-      if(keys[Keyboard.D]) {
-          player.yaw(2*d);
-      }
-      _objects.makePhysicsWork();
-      _objects.update(d);
-      if(player.isAlive()) {
-      } else {
-        view.distance = Math.abs(player.y) + 10;
-        view.setTilt(90);
+      if(isMainMenu()) {
+        _stage++;
       }
       view.render(); 
     }
@@ -105,6 +127,25 @@ package {
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;
 
+        this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
+        stage.addEventListener(Event.RESIZE, onResize);
+        
+        stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+        stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+       
+        _stage = 0; 
+        resetGame();
+        onResize();
+    }
+
+    public function resetGame() : void {
+        trace("resetting");
+
+        if(view != null) {
+          removeChild(view);
+          view.stage3DProxy.dispose();
+        }
+
         player = new Player();
 
         view = new View(player); 
@@ -117,13 +158,8 @@ package {
         _objects.addChild(player);
         view.scene.addChild(_objects);
 
-        this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
-        stage.addEventListener(Event.RESIZE, onResize);
-        onResize();
-        
-        stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-        stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
         timeSinceLastUpdate = getTimer();
+        endAnim = false;
     }
   }
 }

@@ -27,8 +27,6 @@ package objects {
     }
 
     public function update( t : Number ) : void {
-      trace(objectType);
-      trace(_speed);
       if( ! falling ) {
         if( y > 0 ) {
         } else {
