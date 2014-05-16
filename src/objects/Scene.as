@@ -3,8 +3,8 @@ package objects {
   import away3d.containers.*;
   import away3d.materials.lightpickers.*;
 
-  public class SimpleScene extends ObjectContainer3D implements objects.BaseInterface {
-    private var _plane : SimplePlane ;
+  public class Scene extends ObjectContainer3D implements objects.BaseInterface {
+    private var _plane : Plane ;
 
     public function update(t : Number) : void {
       _plane.update(t);
@@ -18,8 +18,8 @@ package objects {
       _plane.checkInside([p]);
     }
 
-    public function SimpleScene() {
-      _plane = new SimplePlane();
+    public function Scene() {
+      _plane = new Plane();
       this.addChild(_plane);
     }
 

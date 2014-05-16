@@ -32,7 +32,7 @@ package objects {
 
       ball = new Mesh(new SphereGeometry(radius), mat);
       addChild(ball);
-      moveUp(radius);
+      moveUp(radius * 5/6);
       addEventListener(Object3DEvent.POSITION_CHANGED, function () : void { 
         ball.pitch(0.75 * Math.sqrt(_speed.length) * _speed.dotProduct(forwardVector));});
     }
@@ -43,7 +43,7 @@ package objects {
         falling = true;
         trace("falling off");
         forces = forces.concat(new Gravity());
-        setTimeout(die,2000);
+        setTimeout(die,1000);
       }
     }
     

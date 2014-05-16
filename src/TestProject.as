@@ -20,7 +20,7 @@ package {
 
   public class TestProject extends Sprite {
     private var view:View;
-    private var _objects:SimpleScene;
+    private var _objects:objects.Scene;
     private var player:Player;
     private var keys:Array = [];
     private var timeSinceLastUpdate:Number;
@@ -36,10 +36,10 @@ package {
           player.thrustForward(-d);
       }
       if(keys[Keyboard.A]) {
-          player.yaw(-d);
+          player.yaw(2*-d);
       }
       if(keys[Keyboard.D]) {
-          player.yaw(d);
+          player.yaw(2*d);
       }
       _objects.makePhysicsWork(player);
       _objects.update(d);
@@ -102,7 +102,8 @@ package {
         this.addChild(view); 
 
         player.addLightPicker(new StaticLightPicker([view.light]));
-        _objects = new SimpleScene();
+        _objects = new objects.Scene();
+        _objects.addLightPicker(new StaticLightPicker([view.light]));
         view.scene.addChild(player);
 //        _objects.addChild(player);
         view.scene.addChild(_objects);

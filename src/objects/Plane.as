@@ -7,7 +7,7 @@ package objects {
   import away3d.materials.lightpickers.*;
   import away3d.utils.*;
 
-  public class SimplePlane extends away3d.entities.Mesh implements objects.BaseInterface {
+  public class Plane extends away3d.entities.Mesh implements objects.BaseInterface {
 
     [Embed(source="../../assets/skins/floor_diffuse.jpg")]
     private static var FloorDiffuse:Class;
@@ -36,11 +36,11 @@ package objects {
       }
     }
 
-    public function SimplePlane( h : Number = 50, r : Number = 700) {
+    public function Plane( h : Number = 50, r : Number = 700) {
       mat = new TextureMaterial(Cast.bitmapTexture(FloorDiffuse));
       mat.specularMap = Cast.bitmapTexture(FloorSpecular);
       super(new CylinderGeometry(r, r,h), mat);
-      moveDown(h/3);
+      moveDown(h/2);
       H = h;
       R = r;
     }
