@@ -3,7 +3,7 @@ package objects {
   import away3d.containers.*;
   import away3d.materials.lightpickers.*;
 
-  public class Scene extends ObjectContainer3D implements objects.BaseInterface {
+  public class Scene extends ObjectContainer3D implements objects.ObjectInterface {
     private var _plane : Plane ;
 
     public function update(t : Number) : void {

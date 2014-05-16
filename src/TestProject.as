@@ -43,9 +43,10 @@ package {
       }
       _objects.makePhysicsWork(player);
       _objects.update(d);
+      player.update(d);
       if(player.isAlive()) {
-        player.update(d);
       } else {
+        view.distance = Math.abs(player.y) + 10;
         view.setTilt(90);
       }
       view.render(); 

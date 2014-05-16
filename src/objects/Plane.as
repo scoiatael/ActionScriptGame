@@ -7,7 +7,7 @@ package objects {
   import away3d.materials.lightpickers.*;
   import away3d.utils.*;
 
-  public class Plane extends away3d.entities.Mesh implements objects.BaseInterface {
+  public class Plane extends away3d.entities.Mesh implements objects.ObjectInterface {
 
     [Embed(source="../../assets/skins/floor_diffuse.jpg")]
     private static var FloorDiffuse:Class;

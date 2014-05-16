@@ -43,6 +43,14 @@ package views {
       _cameraController.tiltAngle = x;
     }
 
+    public function get distance(  ) : Number {
+      return _cameraController.distance;
+    }
+
+    public function set distance( x : Number ) : void {
+      _cameraController.distance = x;
+    }
+
     public function View( lookAt : ObjectContainer3D = null ) {
 
         //setup the cube texture

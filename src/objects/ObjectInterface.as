@@ -2,7 +2,7 @@
 
 package objects
 {
-  public interface BaseInterface
+  public interface ObjectInterface
   {
     function update(t : Number) : void;
   }

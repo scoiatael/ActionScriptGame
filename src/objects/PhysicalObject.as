@@ -9,14 +9,16 @@ package objects {
   import away3d.core.base.*;
 
   import flash.geom.*;
+  import flash.utils.*;
   import physics.*;
 
-  public class PhysicalObject extends ObjectContainer3D implements objects.BaseInterface {
-    private var _force : Vector3D;
+  public class PhysicalObject extends ObjectContainer3D implements objects.ObjectInterface {
+    protected var _force : Vector3D;
     protected var forces : Array;
     protected var _speed : Vector3D;
-    private var _mass : Number;
-    private var alive : Boolean;
+    protected var _mass : Number;
+    protected var alive : Boolean;
+    protected var falling : Boolean; 
 
     public function update( t : Number ) : void {
       if(_speed.length != 0) {
@@ -27,6 +29,25 @@ package objects {
       _force.scaleBy(0);
       updateForces();
     }
+
+    public function get objectType () : String {
+      return "PhysicalObject";
+    }
+
+    public function collideWith (o : PhysicalObject) : void {
+      trace("bump");
+    }
+
+    public function fallOff() : void {
+      if( ! falling) {
+        lookAt(new Vector3D(0,0,0));
+        falling = true;
+        trace("falling off");
+        forces = forces.concat(new Gravity());
+        setTimeout(die,1000);
+      }
+    }
+    
     
     private function updateForces() : void {
       for each (var f : ProtoForce in forces) {
@@ -54,9 +75,6 @@ package objects {
       return alive;
     }
 
-    public function collideWith (o : PhysicalObject) : void {
-    }
-
     public function PhysicalObject(  
                                     fs : Array = null, m : Number = 1, s : Vector3D = null ) {
       if(fs == null) {
@@ -70,6 +88,7 @@ package objects {
       _speed = s;
       _force = new Vector3D;
       alive = true;
+      falling = false;
       updateForces();
     }
   }
