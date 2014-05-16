@@ -21,6 +21,14 @@ package objects {
     protected var falling : Boolean; 
 
     public function update( t : Number ) : void {
+      if( ! falling ) {
+        if( y > 0 ) {
+          trace("flying");
+        } else {
+          y = 0;
+          _speed.y = 0;
+        }
+      }
       if(_speed.length != 0) {
         translate(_speed, _speed.length * t);
       }
@@ -36,6 +44,8 @@ package objects {
 
     public function collideWith (o : PhysicalObject) : void {
       trace("bump");
+      _speed = o._speed;
+      translate(_speed, 1 / 10)     
     }
 
     public function fallOff() : void {
@@ -43,7 +53,6 @@ package objects {
         lookAt(new Vector3D(0,0,0));
         falling = true;
         trace("falling off");
-        forces = forces.concat(new Gravity());
         setTimeout(die,1000);
       }
     }
@@ -83,7 +92,7 @@ package objects {
       if(s == null) {
         s = new Vector3D();
       }
-      forces = fs.concat( new Drag());
+      forces = fs.concat( new Drag(), new Gravity() );
       _mass = m;
       _speed = s;
       _force = new Vector3D;

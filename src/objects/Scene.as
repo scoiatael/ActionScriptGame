@@ -5,6 +5,7 @@ package objects {
 
   public class Scene extends ObjectContainer3D implements objects.ObjectInterface {
     private var _plane : Plane ;
+    private var _objects : /* Ball */ Array;
 
     public function update(t : Number) : void {
       _plane.update(t);
@@ -17,9 +18,10 @@ package objects {
     public function makePhysicsWork(p : Ball) : void {
       _plane.checkInside([p]);
     }
-
+    
     public function Scene() {
       _plane = new Plane();
+      _objects = [];
       this.addChild(_plane);
     }
 

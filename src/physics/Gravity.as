@@ -8,7 +8,6 @@ package physics {
           var downV : Vector3D = o.upVector.clone();
           downV.scaleBy(-1);
           downV.scaleBy(o.mass*Constants.Gravity);
-          trace(downV);
           return downV;
         }
         public function Gravity() {
