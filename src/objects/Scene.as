@@ -5,51 +5,61 @@ package objects {
   import flash.geom.*;
   import physics.*;
 
-  public class Scene extends ObjectContainer3D implements objects.ObjectInterface {
+  public class Scene extends ObjectContainer3D /* all of its children must be Physical Objects */ implements objects.ObjectInterface {
     private var _plane : Plane ;
-    private var _objects : /* Ball */ Array;
     private var light : LightPickerBase;
     private var checker : CollisionChecker;
 
     public function update(t : Number) : void {
-      _plane.update(t);
-      for (var a : Number = 0; a <  _objects.length; a++) {
-        var o : Ball = _objects[a];
-        o.update(t);
+      var obs : Array = new Array();
+      for (var a : Number = 0; a <  numChildren; a++) {
+        var o : PhysicalObject = PhysicalObject(getChildAt(a));
+        if(o.isAlive()) {
+          o.update(t);
+        } else {
+          removeChild(o);
+        }
       }
     }
 
     public function addLightPicker(l : LightPickerBase) : void {
       _plane.addLightPicker(l);
       light = l;
-      for (var a : Number = 0; a <  _objects.length; a++) {
-        trace(a);
-        var o : Ball = _objects[a];
+      for (var a : Number = 0; a <  numChildren; a++) {
+        var o : PhysicalObject = PhysicalObject(getChildAt(a));
         o.addLightPicker(l);
       }
     }
     
-    public function makePhysicsWork(p : Ball) : void {
-      _plane.checkInside(_objects.concat(p));
-      checker.checkCollisions(_objects.concat(p));
+    public function makePhysicsWork() : void {
+      _plane.checkInside(this);
+      checker.checkCollisions(this);
+    }
+
+    public function addObject(o : Ball) : void {
+      if(light != null) {
+        o.addLightPicker(light);
+      }
+      this.addChild(o);
     }
 
     public function addBall() : void {
       var b : Ball = new Ball(10, new Vector3D(100,20,100));
-      if(light != null) {
-        b.addLightPicker(light);
-      }
-      this.addChild(b);
-      _objects = _objects.concat(b);
+      addObject(b);
+    }
+
+    public function addGrowUp() : void {
+      var b : GrowUp = new GrowUp(new Vector3D(-100,20,-100));
+      addObject(b);
     }
     
     public function Scene() {
       checker = new CollisionChecker();
       light = null;
       _plane = new Plane();
-      _objects = [];
       this.addChild(_plane);
       addBall();
+      addGrowUp();
     }
 
   }

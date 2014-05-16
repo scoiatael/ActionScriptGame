@@ -21,18 +21,17 @@ package objects {
     private static var BallSpecular:Class;
     private var mat : TextureMaterial;
 
-    private var ball : away3d.entities.Mesh;
-    private var _radius : Number;
+    protected var ball : away3d.entities.Mesh;
     
-    public function get radius () : Number {
-      return _radius;
-    }
-    
-    public function Ball(n : Number = 20, v : Vector3D = null) {
+    public function Ball(n : Number = 20, v : Vector3D = null, m : TextureMaterial = null ) {
       _radius = n;
 
-      mat = new TextureMaterial(Cast.bitmapTexture(BallDiffuse));
-      mat.specularMap = Cast.bitmapTexture(BallSpecular);
+      if(m == null) {
+        mat = new TextureMaterial(Cast.bitmapTexture(BallDiffuse));
+        mat.specularMap = Cast.bitmapTexture(BallSpecular);
+      } else {
+        mat = m;
+      }
 
       ball = new Mesh(new SphereGeometry(_radius), mat);
       addChild(ball);
@@ -43,8 +42,33 @@ package objects {
         position = v;
       }
     }
+
+    public function grow(n : Number = 5) : void {
+      scale((_radius+n)/_radius);
+      if(_radius+n < 100)  {
+        _radius += n;
+      }
+      thrustUpward(2*_radius);
+    }
+
+    public function shrink(n : Number = 5) : void {
+      scale((_radius-n)/_radius);
+      _radius -= n;
+      thrustUpward(2*_radius);
+      if(_radius < 5) {
+        die();
+      }
+    }
     
-    public function addLightPicker(l : LightPickerBase) : void {
+    override public function collideWith(o : PhysicalObject) : void {
+      if(o.objectType == "GrowUp") {
+        grow();
+      } else {
+        super.collideWith(o);
+      }
+    }
+      
+    override public function addLightPicker(l : LightPickerBase) : void {
       mat.lightPicker = l;
     }
 

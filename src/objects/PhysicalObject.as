@@ -4,6 +4,7 @@ package objects {
   import away3d.containers.*;
   import away3d.entities.*;
   import away3d.materials.*;
+  import away3d.materials.lightpickers.*;
   import away3d.primitives.*;
   import away3d.utils.*;
   import away3d.core.base.*;
@@ -19,8 +20,15 @@ package objects {
     protected var _mass : Number;
     protected var alive : Boolean;
     protected var falling : Boolean; 
+    protected var _objectType : String;
+    protected var _radius : Number;
+    
+    public function addLightPicker(l : LightPickerBase) : void {
+    }
 
     public function update( t : Number ) : void {
+      trace(objectType);
+      trace(_speed);
       if( ! falling ) {
         if( y > 0 ) {
         } else {
@@ -38,7 +46,7 @@ package objects {
     }
 
     public function get objectType () : String {
-      return "PhysicalObject";
+      return _objectType;
     }
 
     public function collideWith (o : PhysicalObject) : void {
@@ -109,6 +117,10 @@ package objects {
       return alive;
     }
 
+    public function get radius () : Number {
+      return _radius;
+    }
+
     public function PhysicalObject(  
                                     fs : Array = null, m : Number = 1, s : Vector3D = null ) {
       if(fs == null) {
@@ -124,6 +136,8 @@ package objects {
       alive = true;
       falling = false;
       updateForces();
+      _objectType = "PhysicalObject";
+      _radius = -1000;
     }
   }
 }

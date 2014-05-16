@@ -50,9 +50,8 @@ package {
       if(keys[Keyboard.D]) {
           player.yaw(2*d);
       }
-      _objects.makePhysicsWork(player);
+      _objects.makePhysicsWork();
       _objects.update(d);
-      player.update(d);
       if(player.isAlive()) {
       } else {
         view.distance = Math.abs(player.y) + 10;
@@ -114,8 +113,8 @@ package {
         player.addLightPicker(new StaticLightPicker([view.light]));
         _objects = new objects.Scene();
         _objects.addLightPicker(new StaticLightPicker([view.light]));
-        view.scene.addChild(player);
-//        _objects.addChild(player);
+//        view.scene.addChild(player);
+        _objects.addChild(player);
         view.scene.addChild(_objects);
 
         this.addEventListener(Event.ENTER_FRAME, onEnterFrame); 
