@@ -29,6 +29,15 @@ package {
       var t : Number = getTimer();
       var d : Number = (t - timeSinceLastUpdate) / 10 / 8;
       timeSinceLastUpdate = t;
+      if(keys[Keyboard.Q]) {
+          player.thrustLeftward(d);
+      }
+      if(keys[Keyboard.E]) {
+          player.thrustLeftward(-d);
+      }
+      if(keys[Keyboard.SPACE]) {
+          player.thrustUpward(d*10);
+      }
       if(keys[Keyboard.W]) {
           player.thrustForward(d);
       }

@@ -22,29 +22,30 @@ package objects {
     private var mat : TextureMaterial;
 
     private var ball : away3d.entities.Mesh;
-    private var radius : Number;
+    private var _radius : Number;
     
-    public function Ball(n : Number = 20) {
-      radius = n;
+    public function get radius () : Number {
+      return _radius;
+    }
+    
+    public function Ball(n : Number = 20, v : Vector3D = null) {
+      _radius = n;
 
       mat = new TextureMaterial(Cast.bitmapTexture(BallDiffuse));
       mat.specularMap = Cast.bitmapTexture(BallSpecular);
 
-      ball = new Mesh(new SphereGeometry(radius), mat);
+      ball = new Mesh(new SphereGeometry(_radius), mat);
       addChild(ball);
-      ball.moveUp(radius * 5/6);
+      ball.moveUp(_radius * 5/6);
       addEventListener(Object3DEvent.POSITION_CHANGED, function () : void { 
         ball.pitch(0.75 * Math.sqrt(_speed.length) * _speed.dotProduct(forwardVector));});
+      if(v != null) {
+        position = v;
+      }
     }
     
     public function addLightPicker(l : LightPickerBase) : void {
       mat.lightPicker = l;
-    }
-
-    public function thrustForward(d : Number) : void {
-      var v : Vector3D = forwardVector.clone();
-      v.scaleBy(d);
-      _speed = _speed.add(v);
     }
 
   }

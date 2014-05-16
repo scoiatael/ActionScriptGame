@@ -5,6 +5,12 @@ package objects {
 
         public function Player() {
         }
+        
+        override public function collideWith(o : PhysicalObject) : void {
+//          var l : * = forwardVector.clone();
+          super.collideWith(o);
+//          lookAt(l);
+        }
     }
 }
 

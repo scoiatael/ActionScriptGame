@@ -23,7 +23,6 @@ package objects {
     public function update( t : Number ) : void {
       if( ! falling ) {
         if( y > 0 ) {
-          trace("flying");
         } else {
           y = 0;
           _speed.y = 0;
@@ -44,8 +43,10 @@ package objects {
 
     public function collideWith (o : PhysicalObject) : void {
       trace("bump");
-      _speed = o._speed;
-      translate(_speed, 1 / 10)     
+      var v:* = position.subtract(o.position);
+      translate(v, (1/16))     
+      _speed = o._speed.clone();
+ //     lookAt(_speed.clone());
     }
 
     public function fallOff() : void {
@@ -57,6 +58,30 @@ package objects {
       }
     }
     
+    public function thrustUpward(d : Number) : void {
+      if( y <= 5 ) {
+        var v : Vector3D = upVector.clone();
+        v.scaleBy(d);
+        _speed = _speed.add(v);
+        y = Math.max(y, 0.1);
+      }
+    }
+
+    public function thrustForward(d : Number) : void {
+      if( y <= 5 ) {
+        var v : Vector3D = forwardVector.clone();
+        v.scaleBy(d);
+        _speed = _speed.add(v);
+      }
+    }
+
+    public function thrustLeftward(d : Number) : void {
+      if( y <= 5 ) {
+        var v : Vector3D = leftVector.clone();
+        v.scaleBy(d);
+        _speed = _speed.add(v);
+      }
+    }
     
     private function updateForces() : void {
       for each (var f : ProtoForce in forces) {
