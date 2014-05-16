@@ -12,6 +12,8 @@ package {
   import flash.events.*;
   import flash.ui.*;
   import flash.utils.*;
+  import flash.text.*;
+  import flash.net.*;
 
   import objects.*;
   import views.View;
@@ -19,6 +21,11 @@ package {
   [SWF(backgroundColor="#000000", frameRate="60")]
 
   public class TestProject extends Sprite {
+    private var hostAddress : String = "localhost";
+    private var portAddress : Number = 10929;
+    private var _text:TextField; 
+    private var _socket:Socket;     
+
     private var view:View;
     private var _objects:objects.Scene;
     private var player:Player;
@@ -132,6 +139,25 @@ package {
         
         stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
         stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+
+
+        _text =  new TextField();
+        _socket = new Socket(hostAddress, portAddress);
+
+        _text.multiline = true;
+        _text.wordWrap = true;
+        _text.background = true;
+        _text.height = 40;
+
+        var format:TextFormat = new TextFormat(); 
+        format.font = "Verdana"; 
+        format.color = 0xFF8844; 
+        format.size = 20; 
+
+        _text.defaultTextFormat = format; 
+        _text.htmlText = "Much <b>text</b>, wow";
+        addChild(_text);
+
        
         _stage = 0; 
         resetGame();
@@ -146,7 +172,17 @@ package {
           view.stage3DProxy.dispose();
         }
 
-        player = new Player();
+
+        var a:ByteArray = new ByteArray();
+        var f:Function = function(str : String) : void { 
+          a.length=0;
+          a.writeUTF(str);
+          if(_socket.connected) {
+            _socket.writeBytes(a);
+          }
+        }; 
+
+        player = new Player(function (s : String) : void { _text.htmlText = s; }, f);
 
         view = new View(player); 
         this.addChild(view); 
