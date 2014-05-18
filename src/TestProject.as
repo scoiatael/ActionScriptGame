@@ -35,6 +35,8 @@ package {
     private var endAnim : Boolean;
     private var _stage : Number; // <0 - paused | =0 - main menu | >0 - playing
 
+    private var timeInGame : Number;
+
     public function isPaused() : Boolean {
       return _stage < 0;
     }
@@ -50,6 +52,7 @@ package {
       var d : Number = (t - timeSinceLastUpdate) / 10 / 8;
       timeSinceLastUpdate = t;
       if(gameStage > 0) {
+        timeInGame += d / 2;
         if(keys[Keyboard.Q]) {
             player.thrustLeftward(d);
         }
@@ -71,9 +74,18 @@ package {
         if(keys[Keyboard.D]) {
             player.yaw(2*d);
         }
+
         _objects.makePhysicsWork();
         _objects.update(d);
+
         if(player.isAlive()) {
+          if(timeInGame > 100 * _stage && _stage < 10) {
+            for(var i:Number = 0; i<_stage / 2; i++)
+              _objects.addRandom(_stage / 30 * 2);
+            if(_stage < 10) {
+              _stage++;
+            }
+          }
         } else {
           view.distance = Math.abs(player.y) + 10;
           if(! endAnim) {
@@ -86,6 +98,7 @@ package {
       if(isMainMenu()) {
         _stage++;
       }
+
       view.render(); 
     }
 
@@ -97,29 +110,7 @@ package {
       view.setWidth(stage.stageWidth);
       view.setHeight(stage.stageHeight);
     }
-   
-/* 
-    private function onKeydown(event : KeyboardEvent) : void {
-      switch (event.charCode) {
-        case 119:
-        case Keyboard.W:
-          player.thrustForward(1);
-          break;
-        case 115:
-        case Keyboard.S:
-          player.thrustForward(-1);
-          break;
-        case 97:
-        case Keyboard.A:
-          player.yaw(-1);
-          break;
-        case 100:
-        case Keyboard.D:
-          player.yaw(1);
-          break;
-      }
-    }
-*/
+
     private function onKeyDown(e:KeyboardEvent):void
     {
       keys[e.keyCode] = true;
@@ -131,7 +122,7 @@ package {
     }
 
     private function playerDiedHandler(ev : ScoreChangeEvent) : void {
-      _log.writeLog("Game over: " + ev.score.toString() + ", " + (new Date()).toString());
+      _log.writeLog(" S " + ev.score.toString() + " L " + _stage.toString() +  " D " + (new Date()).toString());
     }
 
     public function TestProject() {
@@ -168,6 +159,7 @@ package {
           view.dispose();
         }
 
+        timeInGame = 0;
 
         player = new Player();
         player.addEventListener(ScoreChangeEvent.SCORE_CHANGED, _score.scoreChangedHandler);
@@ -190,4 +182,26 @@ package {
     }
   }
 }
-
+   
+/* 
+    private function onKeydown(event : KeyboardEvent) : void {
+      switch (event.charCode) {
+        case 119:
+        case Keyboard.W:
+          player.thrustForward(1);
+          break;
+        case 115:
+        case Keyboard.S:
+          player.thrustForward(-1);
+          break;
+        case 97:
+        case Keyboard.A:
+          player.yaw(-1);
+          break;
+        case 100:
+        case Keyboard.D:
+          player.yaw(1);
+          break;
+      }
+    }
+*/

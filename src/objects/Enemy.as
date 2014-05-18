@@ -32,7 +32,7 @@ package objects {
       var d : Number;
       var that :* = this;
       _env.eachChild(function (o : PhysicalObject, a : Number) : void {
-        if(o.objectType == s) {
+        if(o.objectType == s && o != that) {
           if(p == null) {
             p = o;
             d = CollisionChecker.distanceBetween(Object3D(that), p);
@@ -57,6 +57,8 @@ package objects {
       } else {
         //run to nearest growup
         p = findNearest("GrowUp");
+        if(p == null)
+          p = findNearest("Enemy");
       }  
       if( p != null) {
         var toVec : Vector3D = p.position.clone().subtract(position);
@@ -80,6 +82,14 @@ package objects {
           }
         }
       }
+    }
+
+    override public function collideWith(p : PhysicalObject) : void {
+      if(p.objectType == "Enemy") {
+        grow(p.radius / 4);
+        grow(5);
+      }
+      super.collideWith(p);
     }
   }
 }

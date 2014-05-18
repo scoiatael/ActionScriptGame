@@ -77,6 +77,13 @@ package objects {
       checker.checkCollisions(this);
     }
 
+    private function randomPosition() : Vector3D {
+      var v : Vector3D;
+      while( v == null || (! _plane.hasInside(v)))
+        v = new Vector3D(Math.random()*_plane._R, 50, Math.random()*_plane._R)
+      return v;
+    }
+
     public function addObject(o : Ball) : void {
       if(light != null) {
         o.addLightPicker(light);
@@ -85,13 +92,24 @@ package objects {
     }
 
     public function addEnemy(n : Number) : void {
-      var b : Enemy = new Enemy(this, n, new Vector3D(100,20,100));
+      var b : Enemy = new Enemy(this, n, randomPosition());
       addObject(b);
     }
 
     public function addGrowUp() : void {
-      var b : GrowUp = new GrowUp(new Vector3D(-100,20,-100));
+      var b : GrowUp = new GrowUp(randomPosition());
       addObject(b);
+    }
+
+    public function addRandom( n : Number = -1) : void {
+      if(n == -1) {
+        n = Math.random();
+      }
+      if(Math.random() < n) {
+        addEnemy(60*n*Math.random());
+      } else {
+        addGrowUp();
+      }
     }
     
     public function Scene() {
