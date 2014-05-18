@@ -15,7 +15,7 @@ package helpers {
     public function LogWriter()
     {
 	  _socket = new Socket(hostAddress, portAddress);
-	  _socket.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent) { trace(e); } );
+	  _socket.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent) : void { trace(e); } );
       _buffer = new ByteArray();
 
     }
