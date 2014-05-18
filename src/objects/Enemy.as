@@ -85,7 +85,7 @@ package objects {
     }
 
     override public function collideWith(p : PhysicalObject) : void {
-      if(p.objectType == "Enemy") {
+      if(p.objectType == "Enemy" && radius >= p.radius && radius < 50) {
         grow(p.radius / 4);
         grow(5);
       }

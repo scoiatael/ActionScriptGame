@@ -43,16 +43,20 @@ package objects {
       }
     }
 
-    public function grow(n : Number = 5) : void {
+    public function grow(n : Number = 2) : void {
       scale((_radius+n)/_radius);
+      if(mat.alpha > 0.3)
+        mat.alpha-=n*0.05;
       if(_radius+n < 100)  {
         _radius += n;
       }
       thrustUpward(2*_radius);
     }
 
-    public function shrink(n : Number = 5) : void {
+    public function shrink(n : Number = 2) : void {
       scale((_radius-n)/_radius);
+      if(mat.alpha < 1)
+        mat.alpha+=n*0.05;
       _radius -= n;
       thrustUpward(2*_radius);
       if(_radius < 5) {
