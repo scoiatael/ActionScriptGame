@@ -44,7 +44,6 @@ package objects {
     }
 
     public function grow(n : Number = 5) : void {
-      trace("growing by ", n);
       scale((_radius+n)/_radius);
       if(_radius+n < 100)  {
         _radius += n;

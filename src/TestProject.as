@@ -13,19 +13,19 @@ package {
   import flash.events.*;
   import flash.ui.*;
   import flash.utils.*;
-  import flash.text.*;
-  import flash.net.*;
 
   import objects.*;
   import views.View;
+  import helpers.*;
+  import events.*;
 
   [SWF(backgroundColor="#000000", frameRate="60")]
 
   public class TestProject extends Sprite {
-    private var hostAddress : String = "localhost";
-    private var portAddress : Number = 10929;
-    private var _text:TextField; 
-    private var _socket:Socket;     
+    private var _log:LogWriter;
+    private var _score:ScoreCounter;
+    private var _debug:AwayStats;
+
 
     private var view:View;
     private var _objects:objects.Scene;
@@ -34,8 +34,6 @@ package {
     private var timeSinceLastUpdate:Number;
     private var endAnim : Boolean;
     private var _stage : Number; // <0 - paused | =0 - main menu | >0 - playing
-    private var _debug:AwayStats;
-
 
     public function isPaused() : Boolean {
       return _stage < 0;
@@ -132,6 +130,10 @@ package {
       keys[e.keyCode] = false;
     }
 
+    private function playerDiedHandler(ev : ScoreChangeEvent) : void {
+      _log.writeLog("Game over: " + ev.score.toString() + ", " + (new Date()).toString());
+    }
+
     public function TestProject() {
         stage.scaleMode = StageScaleMode.NO_SCALE;
         stage.align = StageAlign.TOP_LEFT;
@@ -142,23 +144,9 @@ package {
         stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
         stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 
-
-        _text =  new TextField();
-        _socket = new Socket(hostAddress, portAddress);
-
-        _text.multiline = true;
-        _text.wordWrap = true;
-        _text.background = true;
-        _text.height = 40;
-
-        var format:TextFormat = new TextFormat(); 
-        format.font = "Verdana"; 
-        format.color = 0xFF8844; 
-        format.size = 20; 
-
-        _text.defaultTextFormat = format; 
-        _text.htmlText = "Much <b>text</b>, wow";
-        addChild(_text);
+        _log = new LogWriter();
+        _score = new ScoreCounter(40);
+        addChild(_score);
 
         _debug = new AwayStats();
         _debug.y += 40;
@@ -172,6 +160,7 @@ package {
 
     public function resetGame() : void {
         trace("resetting");
+        _log.writeLog("New game " + (new Date()).toString());
 
         if(view != null) {
           _debug.unregisterView(view);
@@ -180,16 +169,10 @@ package {
         }
 
 
-        var a:ByteArray = new ByteArray();
-        var f:Function = function(str : String) : void { 
-          a.length=0;
-          a.writeUTF(str);
-          if(_socket.connected) {
-            _socket.writeBytes(a);
-          }
-        }; 
-
-        player = new Player(function (s : String) : void { _text.htmlText = s; }, f);
+        player = new Player();
+        player.addEventListener(ScoreChangeEvent.SCORE_CHANGED, _score.scoreChangedHandler);
+        player.addEventListener(ScoreChangeEvent.PLAYER_DIED, playerDiedHandler);
+        _score.resetScore();
 
         view = new View(player); 
         addChild(view); 

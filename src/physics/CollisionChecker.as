@@ -25,7 +25,6 @@ package physics {
               _objects.eachChild(function(ob : PhysicalObject, b : Number) : void {
               if(a != b && oa.isAlive() && ob.isAlive() && 
                   oa.radius + ob.radius >= distanceBetween(oa, ob)) {
-                trace(a,b);
                 oa.collideWith(ob);
                 ob.collideWith(oa);
               }

@@ -48,7 +48,6 @@ package objects {
     }
 
     public function collideWith (o : PhysicalObject) : void {
-      trace("bump");
       var v:* = position.subtract(o.position);
       translate(v, (1/16))     
       _speed = o._speed.clone();
@@ -107,7 +106,6 @@ package objects {
     }
     
     public function die() : void {
-      trace("dying");
       alive = false;
     }
 
