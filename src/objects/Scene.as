@@ -2,6 +2,8 @@
 package objects {
   import away3d.containers.*;
   import away3d.materials.lightpickers.*;
+  import away3d.core.base.*;
+
   import flash.geom.*;
   import physics.*;
 
@@ -10,8 +12,46 @@ package objects {
     private var light : LightPickerBase;
     private var checker : CollisionChecker;
 
+    public function eachChild(f : Function) : void {
+      for (var a : Number = 0; a <  numChildren; a++) {
+        var o : PhysicalObject = PhysicalObject(getChildAt(a));
+//        if(_objInScene[a]) {
+          f(o, a);
+//        }
+      }
+    }
+/*
+    private var _obj : Array;
+    private var _objInScene : Array;
+
+    override public function addChild(o : ObjectContainer3D) : ObjectContainer3D {
+      super.addChild(o);
+      var inserted : Boolean = false;
+      eachChild(function(oa : PhysicalObject, a : Number) : void {
+        if(! _objInScene[a] ) {
+          _objInScene[a] = true;
+          _obj[a] = o;
+          inserted = true;
+        }
+      });
+      if(! inserted) {
+        _obj.push(o);
+        _objInScene.push(true);
+      }
+      return o;
+    }
+
+    override public function removeChild(o : ObjectContainer3D) : void {
+      super.removeChild(o);
+      eachChild(function(oa : PhysicalObject, a : Number) : void {
+        if(oa == o ) {
+          _objInScene[a] = true;
+          _obj[a] = null;
+        }
+      });
+    }
+  */
     public function update(t : Number) : void {
-      var obs : Array = new Array();
       for (var a : Number = 0; a <  numChildren; a++) {
         var o : PhysicalObject = PhysicalObject(getChildAt(a));
         if(o.isAlive()) {
@@ -41,11 +81,11 @@ package objects {
       if(light != null) {
         o.addLightPicker(light);
       }
-      this.addChild(o);
+      addChild(o);
     }
 
-    public function addBall() : void {
-      var b : Ball = new Ball(10, new Vector3D(100,20,100));
+    public function addEnemy(n : Number) : void {
+      var b : Enemy = new Enemy(this, n, new Vector3D(100,20,100));
       addObject(b);
     }
 
@@ -55,11 +95,13 @@ package objects {
     }
     
     public function Scene() {
+//      _obj = new Array();
+//      _objInScene = new Array();
       checker = new CollisionChecker();
       light = null;
       _plane = new Plane();
-      this.addChild(_plane);
-      addBall();
+      addChild(_plane);
+      addEnemy(50);
       addGrowUp();
     }
 

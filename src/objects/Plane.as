@@ -22,14 +22,13 @@ package objects {
       mat.lightPicker = l;
     }
     
-    public function checkInside ( _objects : /*PhysicalObject*/ObjectContainer3D ) : void {
-      for (var a : Number = 0; a < _objects.numChildren; a++) {
-        var o : PhysicalObject = PhysicalObject(_objects.getChildAt(a));
+    public function checkInside ( _objects : /*PhysicalObject*/Scene ) : void {
+      _objects.eachChild(function (o : PhysicalObject, a : Number) : void {
         var l : Number = Math.sqrt(Math.pow(o.x,2) + Math.pow(o.z,2));
         if(l > R) {
           o.fallOff();
         }
-      }
+      });
     }
 
     public function Plane( h : Number = 50, r : Number = 700) {

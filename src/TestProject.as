@@ -7,6 +7,7 @@ package {
   import away3d.primitives.*;
   import away3d.utils.*;
   import away3d.materials.lightpickers.*;
+  import away3d.debug.*;
 
   import flash.display.*;
   import flash.events.*;
@@ -33,6 +34,7 @@ package {
     private var timeSinceLastUpdate:Number;
     private var endAnim : Boolean;
     private var _stage : Number; // <0 - paused | =0 - main menu | >0 - playing
+    private var _debug:AwayStats;
 
 
     public function isPaused() : Boolean {
@@ -158,6 +160,10 @@ package {
         _text.htmlText = "Much <b>text</b>, wow";
         addChild(_text);
 
+        _debug = new AwayStats();
+        _debug.y += 40;
+        addChild(_debug);
+
        
         _stage = 0; 
         resetGame();
@@ -168,8 +174,9 @@ package {
         trace("resetting");
 
         if(view != null) {
+          _debug.unregisterView(view);
           removeChild(view);
-          view.stage3DProxy.dispose();
+          view.dispose();
         }
 
 
@@ -185,13 +192,14 @@ package {
         player = new Player(function (s : String) : void { _text.htmlText = s; }, f);
 
         view = new View(player); 
-        this.addChild(view); 
+        addChild(view); 
+        _debug.registerView(view);
 
-        player.addLightPicker(new StaticLightPicker([view.light]));
+        //player.addLightPicker(new StaticLightPicker([view.light]));
         _objects = new objects.Scene();
+        _objects.addChild(player);
         _objects.addLightPicker(new StaticLightPicker([view.light]));
 //        view.scene.addChild(player);
-        _objects.addChild(player);
         view.scene.addChild(_objects);
 
         timeSinceLastUpdate = getTimer();
